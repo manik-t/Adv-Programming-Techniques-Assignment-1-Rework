@@ -32,63 +32,8 @@
 #define INDIGO 5
 #define VIOLET 6
 
-#define NUM_READS 5
-
-void printColour(int colour);
-
 int main(void) {
-   int number = 7;
-   int colour = 0;
    
-   printColour(colour);
-   std::cout << "\tNumber: " << number << std::endl;
-
-   //for(int i=0; i<NUM_READS; ++i)
-   while(!std::cin.eof())
-   {
-      std::cin >> colour;
-      std::cin >> number;
-
-      printColour(colour);
-      std::cout << "\tNumber: " << number << std::endl;
-   }
 
    return EXIT_SUCCESS;
-}
-
-void printColour(int colour)
-{
-// Define some colours as string
-   std::string red = "Red";
-   std::string orange = "Orange";
-   std::string yellow = "Yellow";
-   std::string green = "Green";
-   std::string blue = "Blue";
-   std::string indigo = "Indigo";
-   std::string violet = "Violet";
-   std::string unknown = "UNKNOWN";
-
-   std::cout << "Red 7 Card" << std::endl;
-   std::cout << "\tColour: " << std::endl;
-  
-   std::cout << "\tcolour: ";
-   if (colour == RED) {
-      std::cout << red;
-   } else if (colour == ORANGE) {
-      std::cout << orange;
-   } else if (colour == YELLOW) {
-      std::cout << yellow;
-   } else if (colour == GREEN) {
-      std::cout << green;
-   } else if (colour == BLUE) {
-      std::cout << blue;
-   } else if (colour == INDIGO) {
-      std::cout << indigo;
-   } else if (colour == VIOLET) {
-      std::cout << violet;
-   } else {
-      std::cout << unknown;
-   }
-   std::cout << std::endl;
-
 }

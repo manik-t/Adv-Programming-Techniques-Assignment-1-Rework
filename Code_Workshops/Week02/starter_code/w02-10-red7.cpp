@@ -24,9 +24,9 @@ int main(void) {
       // Read the card value
       std::cin >> colour;
       std::cin >> number;
-
+      
       // Print out "natural version" of the card
-         printCard(number, colour);
+      printCard(number, colour);
    }
 
    return EXIT_SUCCESS;
