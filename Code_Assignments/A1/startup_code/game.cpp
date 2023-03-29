@@ -85,11 +85,16 @@ void Game::start()
         }
 
         if(playerInitialised == true){
+            board->display(player);
             play();
             delete board;
         }
 
-        std::cout << userInput << std::endl;
+        else if(playerInitialised == false){
+            std::cout << "Invalid position" << std::endl;
+        }
+
+        //std::cout << userInput << std::endl;
 
         load_vec.clear();
         
@@ -120,28 +125,28 @@ bool Game::initializePlayer(int xPos, int yPos, std::string dir)
     else{
 
         if(dir == DIRECTION_NORTH){
-            Position* position = new Position(xPos, yPos);
+            Position* position = new Position(yPos, xPos);
             Direction direction = NORTH;
             player->initialisePlayer(position, direction);
             playerInit = board->placePlayer(*position);
         }
 
         else if(dir == DIRECTION_EAST){
-            Position* position = new Position(xPos, yPos);
+            Position* position = new Position(yPos, xPos);
             Direction direction = EAST;
             player->initialisePlayer(position, direction);
             playerInit = board->placePlayer(*position);
         }
 
         else if(dir == DIRECTION_SOUTH){
-            Position* position = new Position(xPos, yPos);
+            Position* position = new Position(yPos, xPos);
             Direction direction = SOUTH;
             player->initialisePlayer(position, direction);
             playerInit = board->placePlayer(*position);
         }
 
         else if(dir == DIRECTION_WEST){
-            Position* position = new Position(xPos, yPos);
+            Position* position = new Position(yPos, xPos);
             Direction direction = WEST;
             player->initialisePlayer(position, direction);
             playerInit = board->placePlayer(*position);
