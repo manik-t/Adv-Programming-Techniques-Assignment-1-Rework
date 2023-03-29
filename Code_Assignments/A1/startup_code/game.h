@@ -34,18 +34,22 @@ private:
      * Load the board. 
      * Return true if the board is loaded and false for quiting the game.
      */
-    bool loadBoard();
+    bool loadBoard(int boardId);
     
     /**
      * Initialize the player. 
      * Return true if the player is initilized and false for quiting the game.
      */
-    bool initializePlayer();
+    bool initializePlayer(int xPos, int yPos, std::string dir);
+
+    void printGameMenu();
 
     /**
      * Play the game and move the player interactively.
      */
     void play();
+
+    
 
 
 public:

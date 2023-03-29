@@ -35,6 +35,7 @@ class Board
 
 private:
     std::vector<std::vector<Cell>>* board;
+    std::vector<std::vector<Cell>> final_vec;
 
 public:
 
