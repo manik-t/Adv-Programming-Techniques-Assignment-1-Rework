@@ -197,11 +197,25 @@ void Game::play()
             }
 
             else{
-                std::cout << "Position is out of bounds" << std::endl;
+                std::cout << "The car is at the edge of the board and coannot move further in that direction" << std::endl;
                 player->updatePosition(ogPos);
             }
 
             std::cout << std::endl;
+        }
+
+        else if(userInput == COMMAND_TURN_LEFT || userInput == COMMAND_TURN_LEFT_SHORTCUT){
+            TurnDirection turnTo = TURN_LEFT;
+            std::cout << "Turning" << std::endl;
+            player->turnDirection(turnTo);
+            board->display(player);
+        }
+
+        else if(userInput == COMMAND_TURN_RIGHT || userInput == COMMAND_TURN_RIGHT_SHORTCUT){
+            TurnDirection turnTo = TURN_RIGHT;
+            std::cout << "Turning" << std::endl;
+            player->turnDirection(turnTo);
+            board->display(player);
         }
     }
 }
@@ -213,8 +227,8 @@ void Game::printGameMenu(){
     std::cout << "      g: number of the game board to load" << std::endl;
     std::cout << std::endl;
     std::cout << "init <x>, <y>, <direction>" << std::endl;
-    std::cout << "      x: horizontal positoin of the car on the board (between 0 & 9)" << std::endl;
-    std::cout << "      y: vertical positoin of the car on the board (between 0 & 9)" << std::endl;
+    std::cout << "      x: horizontal position of the car on the board (between 0 & 9)" << std::endl;
+    std::cout << "      y: vertical position of the car on the board (between 0 & 9)" << std::endl;
     std::cout << "      x: direction of the car's movement (north, east, south, west)" << std::endl;
     std::cout << std::endl;
     std::cout << "forward (or f)" << std::endl;
