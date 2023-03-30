@@ -138,9 +138,9 @@ bool Board::placePlayer(Position position)
     //std::cout << position.y << std::endl;
     bool validPos = false;
 
-    if((*board)[position.x][position.y] != BLOCKED){
+    if((*board)[position.y][position.x] != BLOCKED){
         validPos = true;
-        (*board)[position.x][position.y] = PLAYER;
+        (*board)[position.y][position.x] = PLAYER;
     }
     
     return validPos; // feel free to revise this line, depending on your implementation.
@@ -148,8 +148,31 @@ bool Board::placePlayer(Position position)
 
 PlayerMove Board::movePlayerForward(Player* player)
 {
-    // TODO
-    return PLAYER_MOVED;
+    Position pos = player->position;
+    PlayerMove move = CELL_BLOCKED;
+
+    if(pos.x > 9 || pos.x < 0 || pos.y > 9 || pos.y < 0){
+        move = OUTSIDE_BOUNDS;
+    }
+
+    else if((*board)[pos.y][pos.x] == BLOCKED){
+        move = CELL_BLOCKED;
+    }
+
+    else if((*board)[pos.y][pos.x] == EMPTY){
+        move = PLAYER_MOVED;
+        
+        for(int i = 0; i < 10; i++){
+            for(int j = 0; j < 10; j++){
+                if((*board)[i][j] == PLAYER){
+                    (*board)[i][j] = EMPTY;
+                }
+            }
+        }
+
+        placePlayer(pos);
+    }
+    return move;
 }
 
 void Board::display(Player* player)
@@ -167,7 +190,7 @@ void Board::display(Player* player)
         std::cout << LINE_OUTPUT << i << LINE_OUTPUT;
 
         for(int j = 0; j < 10; j++){
-            Cell selected = final_vec[i][j];
+            Cell selected = (*board)[i][j];
 
             if(selected == BLOCKED){
                 std::cout << BLOCKED_OUTPUT << LINE_OUTPUT;

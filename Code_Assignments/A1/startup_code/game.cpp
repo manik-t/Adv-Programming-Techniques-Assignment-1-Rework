@@ -56,7 +56,7 @@ void Game::start()
         
 
         else{
-            if(load_vec[0] == COMMAND_LOAD){
+            if(load_vec.size() > 1 && load_vec[0] == COMMAND_LOAD){
                 loadBoard(stoi(load_vec[1]));
                 boardLoaded = true;
             }
@@ -69,6 +69,11 @@ void Game::start()
 
                 else{
                     playerInitialised = initializePlayer(stoi(init_vec[1]), stoi(init_vec[2]), init_vec[3]);
+
+                    if(playerInitialised == false){
+                        Helper::printInvalidInput();
+                        delete player;
+                    }
                 }
                 
             }
@@ -88,10 +93,6 @@ void Game::start()
             board->display(player);
             play();
             delete board;
-        }
-
-        else if(playerInitialised == false){
-            std::cout << "Invalid position" << std::endl;
         }
 
         //std::cout << userInput << std::endl;
@@ -117,6 +118,7 @@ bool Game::initializePlayer(int xPos, int yPos, std::string dir)
 {
     bool playerInit = false;
 
+    // Checks if player pos is within bounds
     if(xPos > 9 ||xPos < 0 || yPos > 9 || yPos < 0){
         Helper::printInvalidInput();
     }
@@ -124,45 +126,84 @@ bool Game::initializePlayer(int xPos, int yPos, std::string dir)
 
     else{
 
+        // Initialise player and place it on the board
         if(dir == DIRECTION_NORTH){
-            Position* position = new Position(yPos, xPos);
+            Position* position = new Position(xPos, yPos);
             Direction direction = NORTH;
             player->initialisePlayer(position, direction);
             playerInit = board->placePlayer(*position);
         }
 
         else if(dir == DIRECTION_EAST){
-            Position* position = new Position(yPos, xPos);
+            Position* position = new Position(xPos, yPos);
             Direction direction = EAST;
             player->initialisePlayer(position, direction);
             playerInit = board->placePlayer(*position);
         }
 
         else if(dir == DIRECTION_SOUTH){
-            Position* position = new Position(yPos, xPos);
+            Position* position = new Position(xPos, yPos);
             Direction direction = SOUTH;
             player->initialisePlayer(position, direction);
             playerInit = board->placePlayer(*position);
         }
 
         else if(dir == DIRECTION_WEST){
-            Position* position = new Position(yPos, xPos);
+            Position* position = new Position(xPos, yPos);
             Direction direction = WEST;
             player->initialisePlayer(position, direction);
             playerInit = board->placePlayer(*position);
         }
 
+        // The direction was invalid
         else{
             Helper::printInvalidInput();
         }
     }
-    
+
     return playerInit; // feel free to revise this line.
 }
 
 void Game::play()
 {
-    //TODO
+    string userInput = "empty";
+    //bool validMove = false;
+    PlayerMove validPos;
+
+    while(userInput != COMMAND_QUIT){
+        std::cout << "----------------------------------------------------------" << std::endl;
+        std::cout << "At this stage of the game, only these inputs are acceptable:" << std::endl;
+        std::cout << "forward" << std::endl;
+        std::cout << "turn_left (or l)" << std::endl;
+        std::cout << "turn_right (or r)" << std::endl;
+        std::cout << "quit" << std::endl;
+        userInput = Helper::readInput();
+
+        if(userInput == COMMAND_FORWARD || userInput == COMMAND_FORWARD_SHORTCUT){
+            Position ogPos = player->position;
+            Position newPos = Position();
+            
+            newPos = player->getNextForwardPosition();
+            player->updatePosition(newPos);
+            validPos = board->movePlayerForward(player);
+
+            if(validPos == PLAYER_MOVED){
+                board->display(player);
+            }
+
+            else if(validPos == CELL_BLOCKED){
+                std::cout << "Cell is blocked" << std::endl;
+                player->updatePosition(ogPos);
+            }
+
+            else{
+                std::cout << "Position is out of bounds" << std::endl;
+                player->updatePosition(ogPos);
+            }
+
+            std::cout << std::endl;
+        }
+    }
 }
 
 void Game::printGameMenu(){
