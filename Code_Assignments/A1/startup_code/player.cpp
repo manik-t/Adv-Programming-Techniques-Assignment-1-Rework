@@ -58,7 +58,7 @@ void Player::turnDirection(TurnDirection turnDirection)
             direction = WEST;
         }
 
-        if(direction == WEST){
+        else if(direction == WEST){
             direction = NORTH;
         }
     }
@@ -87,8 +87,6 @@ Position Player::getNextForwardPosition()
         temp.y = position.y;
         temp.x = (position.x - 1);
     }
-
-    std::cout << temp.x << " " << temp.y << std::endl;
 
     return temp;
 }

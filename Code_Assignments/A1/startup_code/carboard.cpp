@@ -6,6 +6,7 @@
 #define QUIT            "3"
 
 using std::string;
+using std::vector;
 
 void showStudentInformation(string name, string id, string email);
 
@@ -21,19 +22,29 @@ int main()
      */
     printMenu();
 
-    string userInput = Helper::readInput();
+    string userInput;
+    vector<string> inputVec;
 
     while(userInput != "3"){
-        bool isNum = Helper::isNumber(userInput);
+        userInput = Helper::readInput();
+        Helper::splitString(userInput, inputVec, " ");
+        
+        if(inputVec.size() > 1){
+            inputVec[0] = "invalid";
+        }
+        
+        bool isNum = Helper::isNumber(inputVec[0]);
 
         if(isNum == true){
-            if(userInput == STARTGAME){
-                Game game = Game();
-                game.start();
-                std::cout << "quitting" << std::endl;
+            if(inputVec[0] == STARTGAME){
+                Game* game = new Game();
+                game->start();
+                userInput = "invalid";
+                std::cout << userInput << std::endl;
+                delete game;
             }
 
-            else if(userInput == SHOWSTUDENTINFO){
+            else if(inputVec[0] == SHOWSTUDENTINFO){
                 showStudentInformation("Manik Thapliyal", "s3953664", "s3953664@student.rmit.edu.au");
             }
 
@@ -47,7 +58,6 @@ int main()
         }
 
         printMenu();
-        userInput = Helper::readInput();
     }
 
     std::cout << "Good bye!\n\n";

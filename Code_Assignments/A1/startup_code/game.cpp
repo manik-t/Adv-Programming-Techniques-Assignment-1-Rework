@@ -78,10 +78,8 @@ void Game::start()
                 
             }
 
-            else if(userInput == COMMAND_QUIT){
-                delete player;
-                delete board;
-                std::cout << userInput << std::endl;
+            else if(load_vec[0] == COMMAND_QUIT){
+                userInput = COMMAND_QUIT;
             }
 
             else{
@@ -92,7 +90,7 @@ void Game::start()
         if(playerInitialised == true){
             board->display(player);
             play();
-            delete board;
+            userInput = COMMAND_QUIT;
         }
 
         //std::cout << userInput << std::endl;
@@ -100,6 +98,8 @@ void Game::start()
         load_vec.clear();
         
     }
+
+    std::cout << "Leaving game" << std::endl;
 }
 
 bool Game::loadBoard(int boardId)
@@ -120,7 +120,7 @@ bool Game::initializePlayer(int xPos, int yPos, std::string dir)
 
     // Checks if player pos is within bounds
     if(xPos > 9 ||xPos < 0 || yPos > 9 || yPos < 0){
-        Helper::printInvalidInput();
+        playerInit = false;
     }
     
 
@@ -157,7 +157,7 @@ bool Game::initializePlayer(int xPos, int yPos, std::string dir)
 
         // The direction was invalid
         else{
-            Helper::printInvalidInput();
+            playerInit = false;
         }
     }
 
@@ -169,6 +169,7 @@ void Game::play()
     string userInput = "empty";
     //bool validMove = false;
     PlayerMove validPos;
+    vector<string> inputVec;
 
     while(userInput != COMMAND_QUIT){
         std::cout << "----------------------------------------------------------" << std::endl;
@@ -178,8 +179,14 @@ void Game::play()
         std::cout << "turn_right (or r)" << std::endl;
         std::cout << "quit" << std::endl;
         userInput = Helper::readInput();
+        
+        Helper::splitString(userInput, inputVec, " ");
 
-        if(userInput == COMMAND_FORWARD || userInput == COMMAND_FORWARD_SHORTCUT){
+        if(inputVec.size() > 1){
+            inputVec[0] = "invalid";
+        }
+
+        if(inputVec[0] == COMMAND_FORWARD || inputVec[0] == COMMAND_FORWARD_SHORTCUT){
             Position ogPos = player->position;
             Position newPos = Position();
             
@@ -197,25 +204,33 @@ void Game::play()
             }
 
             else{
-                std::cout << "The car is at the edge of the board and coannot move further in that direction" << std::endl;
+                std::cout << "The car is at the edge of the board and cannot move further in that direction" << std::endl;
                 player->updatePosition(ogPos);
             }
 
             std::cout << std::endl;
         }
 
-        else if(userInput == COMMAND_TURN_LEFT || userInput == COMMAND_TURN_LEFT_SHORTCUT){
+        else if(inputVec[0] == COMMAND_TURN_LEFT || inputVec[0] == COMMAND_TURN_LEFT_SHORTCUT){
             TurnDirection turnTo = TURN_LEFT;
-            std::cout << "Turning" << std::endl;
+            std::cout << "Turning left" << std::endl;
             player->turnDirection(turnTo);
             board->display(player);
         }
 
-        else if(userInput == COMMAND_TURN_RIGHT || userInput == COMMAND_TURN_RIGHT_SHORTCUT){
+        else if(inputVec[0] == COMMAND_TURN_RIGHT || inputVec[0] == COMMAND_TURN_RIGHT_SHORTCUT){
             TurnDirection turnTo = TURN_RIGHT;
-            std::cout << "Turning" << std::endl;
+            std::cout << "Turning right" << std::endl;
             player->turnDirection(turnTo);
             board->display(player);
+        }
+
+        else if(inputVec[0] == COMMAND_QUIT){
+            userInput = COMMAND_QUIT;
+        }
+
+        else{
+            Helper::printInvalidInput();
         }
     }
 }
