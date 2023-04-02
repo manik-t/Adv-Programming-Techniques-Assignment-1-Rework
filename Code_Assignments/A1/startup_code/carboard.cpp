@@ -39,9 +39,7 @@ int main()
             if(inputVec[0] == STARTGAME){
                 Game* game = new Game();
                 game->start();
-                userInput = "invalid";
-                std::cout << userInput << std::endl;
-                delete game;
+                //delete game;
             }
 
             else if(inputVec[0] == SHOWSTUDENTINFO){

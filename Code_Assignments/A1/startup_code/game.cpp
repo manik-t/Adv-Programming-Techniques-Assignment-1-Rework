@@ -72,7 +72,9 @@ void Game::start()
 
                     if(playerInitialised == false){
                         Helper::printInvalidInput();
-                        delete player;
+                        // Error checking
+                        std::cout << "deleting player " << std::endl;
+                        //delete player;
                     }
                 }
                 
@@ -100,6 +102,7 @@ void Game::start()
     }
 
     std::cout << "Leaving game" << std::endl;
+    std::cout << std::endl;
 }
 
 bool Game::loadBoard(int boardId)

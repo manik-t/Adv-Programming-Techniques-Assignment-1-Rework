@@ -47,32 +47,10 @@ void Board::load(int boardId)
     // Assign board pointer to final_vec
     if(boardId == 1){
         this->board = new vector<vector<Cell>> (BOARD_1);
-        for(int i = 0; i < 10; i++){
-            vector<Cell> temp;
-
-            for(int j = 0; j < 10; j++){
-                temp.push_back(BOARD_1[i][j]);
-            }
-            
-            final_vec.push_back(temp);
-        }
-
-        board = &final_vec;
     }
 
     else if(boardId == 2){
         this->board = new vector<vector<Cell>> (BOARD_2);
-        for(int i = 0; i < 10; i++){
-            vector<Cell> temp;
-
-            for(int j = 0; j < 10; j++){
-                temp.push_back(BOARD_2[i][j]);
-            }
-            
-            final_vec.push_back(temp);
-        }
-
-        board = &final_vec;
     }
 
 
