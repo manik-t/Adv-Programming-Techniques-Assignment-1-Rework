@@ -173,6 +173,7 @@ void Game::play()
     //bool validMove = false;
     PlayerMove validPos;
     vector<string> inputVec;
+    int totalPlayerMoves = 0;
 
     while(userInput != COMMAND_QUIT){
         std::cout << "----------------------------------------------------------" << std::endl;
@@ -199,6 +200,7 @@ void Game::play()
 
             if(validPos == PLAYER_MOVED){
                 board->display(player);
+                totalPlayerMoves += 1;
             }
 
             else if(validPos == CELL_BLOCKED){
@@ -236,6 +238,9 @@ void Game::play()
             Helper::printInvalidInput();
         }
     }
+
+    std::cout << "Total player moves: " << totalPlayerMoves << std::endl;
+    std::cout << std::endl;
 }
 
 void Game::printGameMenu(){
