@@ -109,24 +109,53 @@ void Board::generate(int size, float probability){
     std::cout << std::endl;
     std::cout << "| |";
     int rowNum = 0;
+    int colNum = 0;
 
     for(int i=0; i < (*board).size(); i++){
+
+        if(colNum > 9){
+            colNum = 0;
+        }
+
+        std::cout << colNum << "|";
+        colNum += 1;
+    }
+
+    std::cout << std::endl;
+
+    for(int i = 0; i < (*board).size(); i++){
+        std::cout << LINE_OUTPUT << rowNum << LINE_OUTPUT;
+
+        for(int j = 0; j < (*board).size(); j++){
+            Cell selected = (*board)[i][j];
+
+            if(selected == BLOCKED){
+                std::cout << BLOCKED_OUTPUT << LINE_OUTPUT;
+            }
+
+            else{
+                std::cout << EMPTY_OUTPUT << LINE_OUTPUT;
+            }
+        }
+
+        std::cout << std::endl;
         rowNum += 1;
 
         if(rowNum > 9){
             rowNum = 0;
         }
-        std::cout << rowNum << "|";
     }
-
-    std::cout << std::endl;
 }
 
 bool Board::placePlayer(Position position)
 {
     bool validPos = false;
 
-    if((*board)[position.y][position.x] != BLOCKED){
+    if(position.x > (*board).size()-1 || position.x < 0 || position.y > (*board).size()-1 || position.y < 0){
+        validPos = false;
+    }
+
+    else if((*board)[position.y][position.x] != BLOCKED){
         validPos = true;
         (*board)[position.y][position.x] = PLAYER;
     }
@@ -139,7 +168,7 @@ PlayerMove Board::movePlayerForward(Player* player)
     Position pos = player->position;
     PlayerMove move = CELL_BLOCKED;
 
-    if(pos.x > 9 || pos.x < 0 || pos.y > 9 || pos.y < 0){
+    if(pos.x > (*board).size()-1 || pos.x < 0 || pos.y > (*board).size()-1 || pos.y < 0){
         move = OUTSIDE_BOUNDS;
     }
 

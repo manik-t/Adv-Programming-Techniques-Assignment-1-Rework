@@ -56,11 +56,24 @@ void Game::start()
         
 
         else{
-            if(load_vec.size() > 1 && load_vec[0] == COMMAND_GENERATE_RANDOM){
-                int size = stoi(init_vec[1]);
-                float probability = stof(init_vec[2]);
+            if(load_vec.size() == 3 && load_vec[0] == COMMAND_GENERATE_RANDOM){
+                int size;
+                float probability;
 
-                if(probability > 1 || probability < 0){
+                if(Helper::isNumber(init_vec[1]) == true && Helper::isNumber(init_vec[2])){
+                    size = stoi(init_vec[1]);
+                    probability = stof(init_vec[2]);
+                }
+
+                else{
+                    size = -1;
+                    probability = -1;
+                }
+
+                std::cout << probability << " " << size << std::endl;
+
+
+                if(probability > 1 || probability < 0 || size < 10 || size > 20){
                     Helper::printInvalidInput();
                 }
 
@@ -96,6 +109,8 @@ void Game::start()
         }
 
         if(playerInitialised == true){
+            //error checking
+            std::cout << "Displaying character" << std::endl;
             board->display(player);
             play();
             userInput = COMMAND_QUIT;
@@ -125,47 +140,37 @@ bool Game::initializePlayer(int xPos, int yPos, std::string dir)
 {
     bool playerInit = false;
 
-    // Checks if player pos is within bounds
-    if(xPos > 9 ||xPos < 0 || yPos > 9 || yPos < 0){
-        playerInit = false;
+    // error checking
+    std::cout << "Initialising" << std::endl;
+
+    // Initialise player and place it on the board
+    if(dir == DIRECTION_NORTH){
+        Position* position = new Position(xPos, yPos);
+        Direction direction = NORTH;
+        player->initialisePlayer(position, direction);
+        playerInit = board->placePlayer(*position);
     }
-    
-
+    else if(dir == DIRECTION_EAST){
+        Position* position = new Position(xPos, yPos);
+        Direction direction = EAST;
+        player->initialisePlayer(position, direction);
+        playerInit = board->placePlayer(*position);
+    }
+    else if(dir == DIRECTION_SOUTH){
+        Position* position = new Position(xPos, yPos);
+        Direction direction = SOUTH;
+        player->initialisePlayer(position, direction);
+        playerInit = board->placePlayer(*position);
+    }
+    else if(dir == DIRECTION_WEST){
+        Position* position = new Position(xPos, yPos);
+        Direction direction = WEST;
+        player->initialisePlayer(position, direction);
+        playerInit = board->placePlayer(*position);
+    }
+    // The direction was invalid
     else{
-
-        // Initialise player and place it on the board
-        if(dir == DIRECTION_NORTH){
-            Position* position = new Position(xPos, yPos);
-            Direction direction = NORTH;
-            player->initialisePlayer(position, direction);
-            playerInit = board->placePlayer(*position);
-        }
-
-        else if(dir == DIRECTION_EAST){
-            Position* position = new Position(xPos, yPos);
-            Direction direction = EAST;
-            player->initialisePlayer(position, direction);
-            playerInit = board->placePlayer(*position);
-        }
-
-        else if(dir == DIRECTION_SOUTH){
-            Position* position = new Position(xPos, yPos);
-            Direction direction = SOUTH;
-            player->initialisePlayer(position, direction);
-            playerInit = board->placePlayer(*position);
-        }
-
-        else if(dir == DIRECTION_WEST){
-            Position* position = new Position(xPos, yPos);
-            Direction direction = WEST;
-            player->initialisePlayer(position, direction);
-            playerInit = board->placePlayer(*position);
-        }
-
-        // The direction was invalid
-        else{
-            playerInit = false;
-        }
+        playerInit = false;
     }
 
     return playerInit; // feel free to revise this line.
