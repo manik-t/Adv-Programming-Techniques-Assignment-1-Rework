@@ -32,7 +32,7 @@ void Game::start()
         // Print valid inputs
         std::cout << "----------------------------------------------------------" << std::endl;
         std::cout << "At this stage of the game, only these inputs are acceptable:" << std::endl;
-        std::cout << "load <g>" << std::endl;
+        std::cout << "generate <d>, <p>" << std::endl;
 
         if(boardLoaded == true){
             std::cout << "init <x>, <y>, <direction>" << std::endl;
@@ -56,9 +56,18 @@ void Game::start()
         
 
         else{
-            if(load_vec.size() > 1 && load_vec[0] == COMMAND_LOAD){
-                loadBoard(stoi(load_vec[1]));
-                boardLoaded = true;
+            if(load_vec.size() > 1 && load_vec[0] == COMMAND_GENERATE_RANDOM){
+                int size = stoi(init_vec[1]);
+                float probability = stof(init_vec[2]);
+
+                if(probability > 1 || probability < 0){
+                    Helper::printInvalidInput();
+                }
+
+                else{
+                    boardLoaded = true;
+                    board->generate(size, probability);
+                }  
             }
 
             else if(load_vec[0] == COMMAND_INIT && load_vec.size() == 4 && boardLoaded == true){
@@ -252,8 +261,9 @@ void Game::play()
 void Game::printGameMenu(){
     // Print the game menu
     std::cout << "You can use the following commands to play the game:" << std::endl;
-    std::cout << "load <g>" << std::endl;
-    std::cout << "      g: number of the game board to load" << std::endl;
+    std::cout << "generate <d>, <p>" << std::endl;
+    std::cout << "      d: the dimension of the game board to be generated" << std::endl;
+    std::cout << "      p: the probability of the blocks on board to be generated randomly" << std::endl;
     std::cout << std::endl;
     std::cout << "init <x>, <y>, <direction>" << std::endl;
     std::cout << "      x: horizontal position of the car on the board (between 0 & 9)" << std::endl;

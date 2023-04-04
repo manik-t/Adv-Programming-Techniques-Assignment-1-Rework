@@ -81,6 +81,47 @@ void Board::load(int boardId)
     }
 }
 
+void Board::generate(int size, float probability){
+    vector<vector<Cell>> fullBoard;
+    probability = probability * 100;
+    int block;
+
+    for(int i = 0; i < size; i++){
+        vector<Cell> temp;
+
+        for(int j = 0; j < size; j++){
+            block = rand() % 100;
+
+            if(probability > block){
+                temp.push_back(BLOCKED);
+            }
+
+            else{
+                temp.push_back(EMPTY);
+            }
+        }
+
+        fullBoard.push_back(temp);
+    }
+
+    this->board = new vector<vector<Cell>> (fullBoard);
+
+    std::cout << std::endl;
+    std::cout << "| |";
+    int rowNum = 0;
+
+    for(int i=0; i < (*board).size(); i++){
+        rowNum += 1;
+
+        if(rowNum > 9){
+            rowNum = 0;
+        }
+        std::cout << rowNum << "|";
+    }
+
+    std::cout << std::endl;
+}
+
 bool Board::placePlayer(Position position)
 {
     bool validPos = false;
