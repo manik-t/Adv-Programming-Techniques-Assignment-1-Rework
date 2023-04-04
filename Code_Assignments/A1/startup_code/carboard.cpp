@@ -22,7 +22,8 @@ int main()
      */
     printMenu();
 
-    string userInput;
+    // Initialise userInput so program does not crash if user hits enter right after starting program.
+    string userInput = "invalid";
     vector<string> inputVec;
 
     while(userInput != "3"){

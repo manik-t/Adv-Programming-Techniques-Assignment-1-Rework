@@ -72,9 +72,6 @@ void Game::start()
 
                     if(playerInitialised == false){
                         Helper::printInvalidInput();
-                        // Error checking
-                        std::cout << "deleting player " << std::endl;
-                        //delete player;
                     }
                 }
                 
@@ -94,8 +91,6 @@ void Game::start()
             play();
             userInput = COMMAND_QUIT;
         }
-
-        //std::cout << userInput << std::endl;
 
         load_vec.clear();
         
@@ -175,6 +170,7 @@ void Game::play()
     vector<string> inputVec;
 
     while(userInput != COMMAND_QUIT){
+        // Print valid inputs
         std::cout << "----------------------------------------------------------" << std::endl;
         std::cout << "At this stage of the game, only these inputs are acceptable:" << std::endl;
         std::cout << "forward" << std::endl;
@@ -185,17 +181,23 @@ void Game::play()
         
         Helper::splitString(userInput, inputVec, " ");
 
+        // If the player is input a string with more than one word then it counts as invalid
+
         if(inputVec.size() > 1){
             inputVec[0] = "invalid";
         }
 
+
         if(inputVec[0] == COMMAND_FORWARD || inputVec[0] == COMMAND_FORWARD_SHORTCUT){
+            // Saves the original position of the player
             Position ogPos = player->position;
             Position newPos = Position();
             
             newPos = player->getNextForwardPosition();
             player->updatePosition(newPos);
             validPos = board->movePlayerForward(player);
+            
+            // If the cell is blocked then the position is reverted back to original position
 
             if(validPos == PLAYER_MOVED){
                 board->display(player);
@@ -206,6 +208,7 @@ void Game::play()
                 player->updatePosition(ogPos);
             }
 
+            // If new position is outside bounds then revert back to original position
             else{
                 std::cout << "The car is at the edge of the board and cannot move further in that direction" << std::endl;
                 player->updatePosition(ogPos);
@@ -235,6 +238,9 @@ void Game::play()
         else{
             Helper::printInvalidInput();
         }
+
+        // Resets the input so program won't do anything if user just hits enter over and over
+        inputVec[0] = "clear";
     }
 }
 

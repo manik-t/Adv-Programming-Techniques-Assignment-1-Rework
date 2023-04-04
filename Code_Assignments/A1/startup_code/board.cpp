@@ -53,35 +53,6 @@ void Board::load(int boardId)
         this->board = new vector<vector<Cell>> (BOARD_2);
     }
 
-
-    // Print out the selected board
-    //std::cout << std::endl;
-    //std::cout << "| |";
-//
-    //for(int i=0; i < 10; i++){
-    //    std::cout << i << "|";
-    //}
-//
-    //std::cout << std::endl;
-//
-    //for(int i = 0; i < 10; i++){
-    //    std::cout << LINE_OUTPUT << i << LINE_OUTPUT;
-//
-    //    for(int j = 0; j < 10; j++){
-    //        Cell selected = (*board)[i][j];
-//
-    //        if(selected == BLOCKED){
-    //            std::cout << BLOCKED_OUTPUT << LINE_OUTPUT;
-    //        }
-//
-    //        else{
-    //            std::cout << EMPTY_OUTPUT << LINE_OUTPUT;
-    //        }
-    //    }
-//
-    //    std::cout << std::endl;
-    //}
-
     std::cout << std::endl;
     std::cout << "| |";
 
@@ -112,8 +83,6 @@ void Board::load(int boardId)
 
 bool Board::placePlayer(Position position)
 {
-    //std::cout << position.x << std::endl;
-    //std::cout << position.y << std::endl;
     bool validPos = false;
 
     if((*board)[position.y][position.x] != BLOCKED){
