@@ -109,8 +109,6 @@ void Game::start()
         }
 
         if(playerInitialised == true){
-            //error checking
-            std::cout << "Displaying character" << std::endl;
             board->display(player);
             play();
             userInput = COMMAND_QUIT;
@@ -139,9 +137,6 @@ bool Game::loadBoard(int boardId)
 bool Game::initializePlayer(int xPos, int yPos, std::string dir)
 {
     bool playerInit = false;
-
-    // error checking
-    std::cout << "Initialising" << std::endl;
 
     // Initialise player and place it on the board
     if(dir == DIRECTION_NORTH){
