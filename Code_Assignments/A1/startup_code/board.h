@@ -35,7 +35,6 @@ class Board
 
 private:
     std::vector<std::vector<Cell>>* board;
-    std::vector<std::vector<Cell>> final_vec;
 
 public:
 
@@ -48,6 +47,11 @@ public:
      * Load the board to either BOARD_1 or BOARD_2 according to user input.
      */
     void load(int boardId);
+
+    /**
+     * Generate the board depending on the user input
+    */
+    void generate(int size, float probability);
 
     /**
      * Try to place the PLAYER cell at the provided position.
