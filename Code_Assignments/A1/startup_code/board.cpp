@@ -103,7 +103,7 @@ bool Board::placePlayer(Position position)
         (*board)[position.y][position.x] = PLAYER;
     }
     
-    return validPos; // feel free to revise this line, depending on your implementation.
+    return validPos;
 }
 
 PlayerMove Board::movePlayerForward(Player* player)
@@ -152,7 +152,7 @@ void Board::display(Player* player)
     for(int i=0; i < boardSize; i++){
         std::cout << colNum << "|";
         colNum += 1;
-        if(colNum > 9){
+        if(colNum == DEFAULT_BOARD_DIMENSION){
             colNum = 0;
         }
     }
@@ -164,7 +164,7 @@ void Board::display(Player* player)
         std::cout << LINE_OUTPUT << rowNum << LINE_OUTPUT;
         rowNum += 1;
 
-        if(rowNum > 9){
+        if(rowNum == DEFAULT_BOARD_DIMENSION){
             rowNum = 0;
         }
 
@@ -185,9 +185,6 @@ void Board::display(Player* player)
                 std::cout << EMPTY_OUTPUT << LINE_OUTPUT;
             }
         }
-
         std::cout << std::endl;
     }
 }
-
-

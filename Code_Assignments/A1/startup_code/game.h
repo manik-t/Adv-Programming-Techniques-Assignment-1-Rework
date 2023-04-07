@@ -22,6 +22,8 @@
 #define DIRECTION_SOUTH "south"
 #define DIRECTION_WEST "west"
 
+#define PLAYER_MOVE_COUNTED 1
+
 class Game
 {
 private:

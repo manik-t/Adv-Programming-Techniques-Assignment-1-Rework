@@ -17,8 +17,20 @@ void printMenu();
 int main()
 {
     /**
-     * TODO: here's the main function. You can write the "main menu" loop/code
-     * here or you can make separate functions - up to you.
+     * The approach I took for this project was to incrementally add functionality to it and test it.
+     * First I would try to figure out the logic and what functions I will need to use. After I had an idea
+     * of what had to be done I would implement the functionality of the current increment, review and ensure 
+     * there were no errors with the newly implementd functions. Then I would pick another set of functions
+     * to implement in the next increment. Repeat until the program is finished.
+     * 
+     * I initially had issues with how pointers worked and issues with passing values from funtion to funtion.
+     * Eventually with more practice and a better understanding of the theory behind c++ these issues were no longer
+     * occuring. Other issues regarded input validation however that was resolved through extensive testing of the 
+     * program and recording how it would react to certain inputs.
+     * 
+     * The start up code could have been more modular. Through the assignment I would find that if I just followed
+     * the structure of the start up code my program will be monolithic. Adding new functions to break up these
+     * large functions allowed for a more modular program and made troubleshooting easier.
      */
     printMenu();
 
@@ -26,7 +38,7 @@ int main()
     string userInput;
     vector<string> inputVec;
 
-    while(userInput != "3"){
+    while(userInput != QUIT){
         userInput = Helper::readInput();
         Helper::splitString(userInput, inputVec, " ");
         

@@ -16,7 +16,7 @@ Game::~Game()
 
 void Game::start()
 {   
-    string userInput;
+    string userInput = "invalid";
     bool boardLoaded = false;
     bool playerInitialised = false;
     vector<string> init_vec;
@@ -47,14 +47,6 @@ void Game::start()
 
         Helper::splitString(userInput, init_vec, ", ");
 
-        std::cout << "Error checking: " << std::endl;
-        long initSize = init_vec.size();
-        for(int i = 0; i < initSize; i++){
-            std::cout << init_vec[i] << std::endl;
-        }
-
-        std::cout << std::endl;
-
         // If user inputs nothing
         if(init_vec.size() == 0){
             userInput = "invalid";
@@ -64,7 +56,6 @@ void Game::start()
         else{
             // If user inputs generate command
             if(init_vec.size() == 3 && init_vec[0] == COMMAND_GENERATE_RANDOM){
-
                 boardLoaded = generateBoard(init_vec);  
             }
 
@@ -74,8 +65,6 @@ void Game::start()
                 // Checks if the input are actually digits or not
                 if(Helper::isNumber(init_vec[1]) == false || Helper::isNumber(init_vec[2]) == false){
                     Helper::printInvalidInput();
-                    // error checking
-                    std::cout << "is not number " << std::endl;
                 }
 
                 else{
@@ -152,14 +141,13 @@ bool Game::initializePlayer(int xPos, int yPos, std::string dir)
         playerInit = false;
     }
 
-    return playerInit; // feel free to revise this line.
+    return playerInit;
 }
 
 void Game::play()
 {
     string userInput = "empty";
-    //bool validMove = false;
-    PlayerMove validPos;
+    PlayerMove validPos = CELL_BLOCKED;
     vector<string> inputVec;
     int totalPlayerMoves = 0;
 
@@ -175,11 +163,9 @@ void Game::play()
         Helper::splitString(userInput, inputVec, " ");
 
         // If the player is input a string with more than one word then it counts as invalid
-
         if(inputVec.size() > 1){
             inputVec[0] = "invalid";
         }
-
 
         if(inputVec[0] == COMMAND_FORWARD || inputVec[0] == COMMAND_FORWARD_SHORTCUT){
             // Saves the original position of the player
@@ -250,13 +236,13 @@ void Game::printGameMenu(){
     std::cout << std::endl;
     std::cout << "| |";
 
-    for(int i=0; i < 10; i++){
+    for(int i=0; i < DEFAULT_BOARD_DIMENSION; i++){
         std::cout << i << "|";
     }
 
     std::cout << std::endl;
 
-    for(int i=0; i < 10; i++){
+    for(int i=0; i < DEFAULT_BOARD_DIMENSION; i++){
         std::cout << "|" << i << "|";
         for(int j = 0; j < 10; j++){
             std::cout << " |";
@@ -267,19 +253,14 @@ void Game::printGameMenu(){
 }
 
 bool Game::generateBoard(vector<string> init_vec){
-    int size;
-    float probability;
-    bool boardLoaded;
+    int size = -1;
+    float probability = -1;
+    bool boardLoaded = false;
 
     // Check if inputs are numbers
-    if(Helper::isNumber(init_vec[1]) == true && Helper::isNumber(init_vec[2])){
+    if(Helper::isNumber(init_vec[1]) == true && Helper::isNumber(init_vec[2]) == true){
         size = stoi(init_vec[1]);
         probability = stof(init_vec[2]);
-    }
-
-    else{
-        size = -1;
-        probability = -1;
     }
                 
     // Check if numbers are wihtin bounds
@@ -328,7 +309,7 @@ int Game::checkPlayerPos(Position ogPos, PlayerMove validPos){
     // If the move was valid then display the player and return 1
     if(validPos == PLAYER_MOVED){
         board->display(player);
-        moveCount = 1;
+        moveCount = PLAYER_MOVE_COUNTED;
     }
 
     // If new pos was blocked then print error message and revert player to old position
