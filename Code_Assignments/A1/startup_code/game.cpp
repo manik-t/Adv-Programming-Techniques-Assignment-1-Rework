@@ -339,7 +339,7 @@ int Game::checkPlayerPos(Position ogPos, PlayerMove validPos){
 
 string Game::toLowerCase(string userInput){
     // Create pointer to char array
-    long arrSize = userInput.length();
+    int arrSize = userInput.length();
     char* charArr = new char[arrSize];
     
     //Fill array with userInput characters
