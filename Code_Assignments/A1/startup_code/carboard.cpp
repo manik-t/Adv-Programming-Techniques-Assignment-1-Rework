@@ -23,14 +23,14 @@ int main()
     printMenu();
 
     // Initialise userInput so program does not crash if user hits enter right after starting program.
-    string userInput = "invalid";
+    string userInput;
     vector<string> inputVec;
 
     while(userInput != "3"){
         userInput = Helper::readInput();
         Helper::splitString(userInput, inputVec, " ");
         
-        if(inputVec.size() > 1){
+        if(inputVec.size() > 1 || inputVec.size() == 0){
             inputVec[0] = "invalid";
         }
         
