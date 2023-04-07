@@ -57,23 +57,40 @@ void Board::load(int boardId)
 void Board::generate(int size, float probability){
     // Create a new vector of vectors
     vector<vector<Cell>> fullBoard;
+    int numCells = (size * size);
+    long numBlocks = (numCells * probability);
     probability = probability * 100;
-    int block;
+
+    std::random_device device;
+    std::mt19937 generator(device());
+    std::uniform_int_distribution<int> distribution(1, 100);
+    int randomInt = 0;
 
     for(int i = 0; i < size; i++){
         // Create a temp vector
         vector<Cell> temp;
 
         for(int j = 0; j < size; j++){
-            block = rand() % 100;
+            randomInt = distribution(generator);
 
             // Randomly place blocks dependent on the probability
-            if(probability > block){
-                temp.push_back(BLOCKED);
+            if(numCells > numBlocks && numBlocks != 0){
+                if(randomInt <= probability){
+                    temp.push_back(BLOCKED);
+                    numBlocks -= 1;
+                    numCells -= 1;
+                }
+
+                else{
+                    temp.push_back(EMPTY);
+                    numCells -= 1;
+                }
             }
 
             else{
-                temp.push_back(EMPTY);
+                temp.push_back(BLOCKED);
+                numBlocks -= 1;
+                numCells -= 1;
             }
         }
 

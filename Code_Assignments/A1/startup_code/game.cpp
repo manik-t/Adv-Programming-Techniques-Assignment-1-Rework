@@ -45,6 +45,10 @@ void Game::start()
             userInput = COMMAND_QUIT;
         }
 
+        else{
+            userInput = toLowerCase(userInput);
+        }
+
         Helper::splitString(userInput, init_vec, ", ");
 
         // If user inputs nothing
@@ -55,12 +59,12 @@ void Game::start()
 
         else{
             // If user inputs generate command
-            if(init_vec.size() == 3 && init_vec[0] == COMMAND_GENERATE_RANDOM){
+            if(init_vec.size() == 3 && init_vec[1].length() < 4 && init_vec[0] == COMMAND_GENERATE_RANDOM){
                 boardLoaded = generateBoard(init_vec);  
             }
 
             // User inputs initialise command
-            else if(init_vec[0] == COMMAND_INIT && init_vec.size() == 4 && boardLoaded == true){
+            else if(init_vec[0] == COMMAND_INIT && init_vec.size() == 4 && init_vec[1].length() < 4 && init_vec[2].length() < 4 && boardLoaded == true){
 
                 // Checks if the input are actually digits or not
                 if(Helper::isNumber(init_vec[1]) == false || Helper::isNumber(init_vec[2]) == false){
@@ -159,6 +163,10 @@ void Game::play()
         if(std::cin.eof()){
             userInput = COMMAND_QUIT;
         }
+
+        else{
+            userInput = toLowerCase(userInput);
+        }
         
         Helper::splitString(userInput, inputVec, " ");
 
@@ -215,7 +223,8 @@ void Game::printGameMenu(){
     // Print the game menu
     std::cout << "You can use the following commands to play the game:" << std::endl;
     std::cout << "generate <d>, <p>" << std::endl;
-    std::cout << "      d: the dimension of the game board to be generated (between 10 & 20)" << std::endl;
+    std::cout << "      d: the dimension of the game board to be generated (between " <<BOARD_LOWER_LIMIT<<
+                 " & "<<BOARD_UPPER_LIMIT<<")" << std::endl;
     std::cout << "      p: the probability of the blocks on board to be generated randomly" << std::endl;
     std::cout << std::endl;
     std::cout << "init <x>, <y>, <direction>" << std::endl;
@@ -264,7 +273,7 @@ bool Game::generateBoard(vector<string> init_vec){
     }
                 
     // Check if numbers are wihtin bounds
-    if(probability > 1 || probability < 0 || size < 10 || size > 20){
+    if(probability > 1 || probability < 0 || size < BOARD_LOWER_LIMIT || size > BOARD_UPPER_LIMIT){
         Helper::printInvalidInput();
     }
 
@@ -326,4 +335,25 @@ int Game::checkPlayerPos(Position ogPos, PlayerMove validPos){
 
     // Return 1 or 0 depending on if move was valid
     return moveCount;
+}
+
+string Game::toLowerCase(string userInput){
+    // Create pointer to char array
+    long arrSize = userInput.length();
+    char* charArr = new char[arrSize];
+    
+    //Fill array with userInput characters
+    for(int i = 0; i < arrSize; i++){
+        charArr[i] = userInput[i];
+        charArr[i] = tolower(charArr[i]);
+    }
+
+    userInput = "";
+
+    // Fill empty userInput with lower case characters
+    for(int i = 0; i < arrSize; i++){
+        userInput = userInput + charArr[i];
+    }
+
+    return userInput;
 }

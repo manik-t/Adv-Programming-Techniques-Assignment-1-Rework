@@ -18,19 +18,23 @@ int main()
 {
     /**
      * The approach I took for this project was to incrementally add functionality to it and test it.
-     * First I would try to figure out the logic and what functions I will need to use. After I had an idea
-     * of what had to be done I would implement the functionality of the current increment, review and ensure 
-     * there were no errors with the newly implementd functions. Then I would pick another set of functions
-     * to implement in the next increment. Repeat until the program is finished.
+     * First I would check the functionality required for each requirement and write the logic of how
+     * to meet the requirement. Then I would implement the functions testing them as I complete the current
+     * increment. After I have finished the implementation I would review and revies the code until I was 
+     * sure that the code will react as expected. Then I would repeat the same process for all the other
+     * requirements until all requirements had been met, slowly adding more functionality with each new
+     * increment.
      * 
-     * I initially had issues with how pointers worked and issues with passing values from funtion to funtion.
-     * Eventually with more practice and a better understanding of the theory behind c++ these issues were no longer
-     * occuring. Other issues regarded input validation however that was resolved through extensive testing of the 
-     * program and recording how it would react to certain inputs.
+     * I intially had issues with pointers as well as passing data from function to function. Eventually as I
+     * got a better understanding of the theory behind c++ and more experience with the programming language
+     * these issues would no longer occur. I also would have issues with the input validation however this was
+     * remedied by extensively testing the program as well as reviewing the code to ensure the error wasn't due
+     * to an error in the programs logic.
      * 
-     * The start up code could have been more modular. Through the assignment I would find that if I just followed
-     * the structure of the start up code my program will be monolithic. Adding new functions to break up these
-     * large functions allowed for a more modular program and made troubleshooting easier.
+     * The start up code could have had more functions from the start to help it be more modular. As I was coding
+     * the program was becoming more and more monolithic and had a sever impact on testing the code and the 
+     * readability of it. However, this was an easy issue to fix by just adding new functions as I coded. By making
+     * it modular it had improved the readability of the code and made it easier to see where errors were occuring.
      */
     printMenu();
 

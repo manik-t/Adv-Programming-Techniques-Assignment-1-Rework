@@ -23,6 +23,8 @@
 #define DIRECTION_WEST "west"
 
 #define PLAYER_MOVE_COUNTED 1
+#define BOARD_LOWER_LIMIT   5
+#define BOARD_UPPER_LIMIT   25
 
 class Game
 {
@@ -74,7 +76,7 @@ private:
      */
     bool generateBoard(std::vector<std::string> init_vec);
     
-
+    std::string toLowerCase(std::string userInput);
 
 public:
 
