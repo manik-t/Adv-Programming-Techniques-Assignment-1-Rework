@@ -40,7 +40,7 @@ int main()
             if(inputVec[0] == STARTGAME){
                 Game* game = new Game();
                 game->start();
-                //delete game;
+                delete game;
             }
 
             else if(inputVec[0] == SHOWSTUDENTINFO){
@@ -65,6 +65,7 @@ int main()
 }
 
 void printMenu(){
+    std::cout << std::endl;
     // Prints menu options and prompts for input
     std::cout << "Welcome to Car Board" << std::endl;
     std::cout << "--------------------" << std::endl;

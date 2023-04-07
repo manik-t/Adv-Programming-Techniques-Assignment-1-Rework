@@ -32,7 +32,8 @@ const vector<vector<Cell>> Board::BOARD_2 =
 
 Board::Board()
 {
-    
+    // Initialise a board
+    load(1);
 }
 
 Board::~Board()
@@ -50,34 +51,6 @@ void Board::load(int boardId)
 
     else if(boardId == 2){
         this->board = new vector<vector<Cell>> (BOARD_2);
-    }
-
-    // Print the selected board
-    std::cout << std::endl;
-    std::cout << "| |";
-
-    for(int i=0; i < 10; i++){
-        std::cout << i << "|";
-    }
-
-    std::cout << std::endl;
-
-    for(int i = 0; i < 10; i++){
-        std::cout << LINE_OUTPUT << i << LINE_OUTPUT;
-
-        for(int j = 0; j < 10; j++){
-            Cell selected = (*board)[i][j];
-
-            if(selected == BLOCKED){
-                std::cout << BLOCKED_OUTPUT << LINE_OUTPUT;
-            }
-
-            else{
-                std::cout << EMPTY_OUTPUT << LINE_OUTPUT;
-            }
-        }
-
-        std::cout << std::endl;
     }
 }
 
@@ -110,48 +83,9 @@ void Board::generate(int size, float probability){
 
     // Set pointer to a copy of fullBoard in the heap
     this->board = new vector<vector<Cell>> (fullBoard);
-
-    // Print board
-    std::cout << std::endl;
-    std::cout << "| |";
-    int rowNum = 0;
-    int colNum = 0;
-
-    for(int i=0; i < size; i++){
-
-        if(colNum > 9){
-            colNum = 0;
-        }
-
-        std::cout << colNum << "|";
-        colNum += 1;
-    }
-
-    std::cout << std::endl;
-
-    for(int i = 0; i < size; i++){
-        std::cout << LINE_OUTPUT << rowNum << LINE_OUTPUT;
-
-        for(int j = 0; j < size; j++){
-            Cell selected = (*board)[i][j];
-
-            if(selected == BLOCKED){
-                std::cout << BLOCKED_OUTPUT << LINE_OUTPUT;
-            }
-
-            else{
-                std::cout << EMPTY_OUTPUT << LINE_OUTPUT;
-            }
-        }
-
-        std::cout << std::endl;
-        rowNum += 1;
-
-        if(rowNum > 9){
-            rowNum = 0;
-        }
-    }
 }
+
+
 
 bool Board::placePlayer(Position position)
 {

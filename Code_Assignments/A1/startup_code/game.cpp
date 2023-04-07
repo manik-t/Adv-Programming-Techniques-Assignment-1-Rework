@@ -11,7 +11,6 @@ Game::Game()
 Game::~Game()
 {
     delete board;
-    delete player;
 }
 
 
@@ -20,7 +19,6 @@ void Game::start()
     string userInput;
     bool boardLoaded = false;
     bool playerInitialised = false;
-    vector<string> load_vec;
     vector<string> init_vec;
 
 
@@ -47,27 +45,37 @@ void Game::start()
             userInput = COMMAND_QUIT;
         }
 
-        Helper::splitString(userInput, load_vec, " ");
         Helper::splitString(userInput, init_vec, ", ");
 
+        std::cout << "Error checking: " << std::endl;
+        long initSize = init_vec.size();
+        for(int i = 0; i < initSize; i++){
+            std::cout << init_vec[i] << std::endl;
+        }
+
+        std::cout << std::endl;
+
         // If user inputs nothing
-        if(load_vec.size() == 0){
+        if(init_vec.size() == 0){
             userInput = "invalid";
             Helper::printInvalidInput();
         }
 
         else{
             // If user inputs generate command
-            if(load_vec.size() == 3 && load_vec[0] == COMMAND_GENERATE_RANDOM){
-                boardLoaded = generateBoard(load_vec, init_vec);  
+            if(init_vec.size() == 3 && init_vec[0] == COMMAND_GENERATE_RANDOM){
+
+                boardLoaded = generateBoard(init_vec);  
             }
 
             // User inputs initialise command
-            else if(load_vec[0] == COMMAND_INIT && load_vec.size() == 4 && boardLoaded == true){
+            else if(init_vec[0] == COMMAND_INIT && init_vec.size() == 4 && boardLoaded == true){
 
                 // Checks if the input are actually digits or not
                 if(Helper::isNumber(init_vec[1]) == false || Helper::isNumber(init_vec[2]) == false){
                     Helper::printInvalidInput();
+                    // error checking
+                    std::cout << "is not number " << std::endl;
                 }
 
                 else{
@@ -79,7 +87,7 @@ void Game::start()
                     }
                 }
             }
-            
+
             else if(userInput != COMMAND_QUIT){
                 Helper::printInvalidInput();
             }
@@ -92,7 +100,7 @@ void Game::start()
             userInput = COMMAND_QUIT;
         }
 
-        load_vec.clear();
+        init_vec.clear();
     }
 }
 
@@ -221,12 +229,12 @@ void Game::printGameMenu(){
     // Print the game menu
     std::cout << "You can use the following commands to play the game:" << std::endl;
     std::cout << "generate <d>, <p>" << std::endl;
-    std::cout << "      d: the dimension of the game board to be generated" << std::endl;
+    std::cout << "      d: the dimension of the game board to be generated (between 10 & 20)" << std::endl;
     std::cout << "      p: the probability of the blocks on board to be generated randomly" << std::endl;
     std::cout << std::endl;
     std::cout << "init <x>, <y>, <direction>" << std::endl;
-    std::cout << "      x: horizontal position of the car on the board (between 0 & 9)" << std::endl;
-    std::cout << "      y: vertical position of the car on the board (between 0 & 9)" << std::endl;
+    std::cout << "      x: horizontal position of the car on the board" << std::endl;
+    std::cout << "      y: vertical position of the car on the board" << std::endl;
     std::cout << "      x: direction of the car's movement (north, east, south, west)" << std::endl;
     std::cout << std::endl;
     std::cout << "forward (or f)" << std::endl;
@@ -258,7 +266,7 @@ void Game::printGameMenu(){
     }
 }
 
-bool Game::generateBoard(vector<string> load_vec, vector<string> init_vec){
+bool Game::generateBoard(vector<string> init_vec){
     int size;
     float probability;
     bool boardLoaded;
@@ -282,6 +290,7 @@ bool Game::generateBoard(vector<string> load_vec, vector<string> init_vec){
     else{
         boardLoaded = true;
         board->generate(size, probability);
+        board->display(player);
     }
 
     return boardLoaded;

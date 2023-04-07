@@ -70,7 +70,7 @@ private:
     /**
      * Function that handles generating board
      */
-    bool generateBoard(std::vector<std::string> load_vec, std::vector<std::string> init_vec);
+    bool generateBoard(std::vector<std::string> init_vec);
     
 
 

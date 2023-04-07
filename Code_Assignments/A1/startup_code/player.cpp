@@ -14,7 +14,7 @@ Position::Position(int x, int y)
 
 Player::Player()
 {
-    //TODO
+    
 }
 
 void Player::initialisePlayer(Position* position, Direction direction)
