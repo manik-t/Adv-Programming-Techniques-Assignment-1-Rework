@@ -46,7 +46,9 @@ void Game::start()
         }
 
         else{
-            userInput = toLowerCase(userInput);
+            char* charPtr = new char[userInput.length()];
+            userInput = toLowerCase(userInput, charPtr);
+            delete[] charPtr;
         }
 
         Helper::splitString(userInput, init_vec, ", ");
@@ -165,7 +167,9 @@ void Game::play()
         }
 
         else{
-            userInput = toLowerCase(userInput);
+            char* charPtr = new char[userInput.length()];
+            userInput = toLowerCase(userInput, charPtr);
+            delete[] charPtr;
         }
         
         Helper::splitString(userInput, inputVec, " ");
@@ -337,10 +341,9 @@ int Game::checkPlayerPos(Position ogPos, PlayerMove validPos){
     return moveCount;
 }
 
-string Game::toLowerCase(string userInput){
+string Game::toLowerCase(string userInput, char* charArr){
     // Create pointer to char array
     int arrSize = userInput.length();
-    char* charArr = new char[arrSize];
     
     //Fill array with userInput characters
     for(int i = 0; i < arrSize; i++){

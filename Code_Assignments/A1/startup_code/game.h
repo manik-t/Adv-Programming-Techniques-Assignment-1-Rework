@@ -76,7 +76,7 @@ private:
      */
     bool generateBoard(std::vector<std::string> init_vec);
     
-    std::string toLowerCase(std::string userInput);
+    std::string toLowerCase(std::string userInput, char* charArr);
 
 public:
 
