@@ -20,10 +20,8 @@ void Game::start()
     string userInput;
     bool boardLoaded = false;
     bool playerInitialised = false;
-    //bool validInit = false;
     vector<string> load_vec;
     vector<string> init_vec;
-    //vector<string>* ptrLoad_vec = &load_vec;
 
 
     printGameMenu();
@@ -45,9 +43,14 @@ void Game::start()
         // Read user input
         userInput = Helper::readInput();
 
+        if(std::cin.eof()){
+            userInput = COMMAND_QUIT;
+        }
+
         Helper::splitString(userInput, load_vec, " ");
         Helper::splitString(userInput, init_vec, ", ");
 
+        // If user inputs nothing
         if(load_vec.size() == 0){
             userInput = "invalid";
             Helper::printInvalidInput();
@@ -56,10 +59,12 @@ void Game::start()
         
 
         else{
+            // If user inputs generate command
             if(load_vec.size() == 3 && load_vec[0] == COMMAND_GENERATE_RANDOM){
                 int size;
                 float probability;
 
+                // Check if inputs are numbers
                 if(Helper::isNumber(init_vec[1]) == true && Helper::isNumber(init_vec[2])){
                     size = stoi(init_vec[1]);
                     probability = stof(init_vec[2]);
@@ -69,10 +74,8 @@ void Game::start()
                     size = -1;
                     probability = -1;
                 }
-
-                std::cout << probability << " " << size << std::endl;
-
-
+                
+                // Check if numbers are wihtin bounds
                 if(probability > 1 || probability < 0 || size < 10 || size > 20){
                     Helper::printInvalidInput();
                 }
@@ -83,13 +86,16 @@ void Game::start()
                 }  
             }
 
+            // User inputs initialise command
             else if(load_vec[0] == COMMAND_INIT && load_vec.size() == 4 && boardLoaded == true){
-                // Checks if the input are actually digits
+
+                // Checks if the input are actually digits or not
                 if(Helper::isNumber(init_vec[1]) == false || Helper::isNumber(init_vec[2]) == false){
                     Helper::printInvalidInput();
                 }
 
                 else{
+                    // Tries to initialise player and return whether inputs were valid or not
                     playerInitialised = initializePlayer(stoi(init_vec[1]), stoi(init_vec[2]), init_vec[3]);
 
                     if(playerInitialised == false){
@@ -109,6 +115,7 @@ void Game::start()
         }
 
         if(playerInitialised == true){
+            // If the player is succesfully init then play game
             board->display(player);
             play();
             userInput = COMMAND_QUIT;
@@ -118,6 +125,7 @@ void Game::start()
         
     }
 
+    std::cout << std::endl;
     std::cout << "Leaving game" << std::endl;
     std::cout << std::endl;
 }
@@ -127,6 +135,7 @@ bool Game::loadBoard(int boardId)
     bool boardLoaded = false;
 
     if(boardId == 1 || boardId == 2){
+        // Checks if valid board ID has been chosen then sends ID
         boardLoaded = true;
         board->load(boardId);
     }
@@ -163,6 +172,7 @@ bool Game::initializePlayer(int xPos, int yPos, std::string dir)
         player->initialisePlayer(position, direction);
         playerInit = board->placePlayer(*position);
     }
+
     // The direction was invalid
     else{
         playerInit = false;
@@ -180,14 +190,13 @@ void Game::play()
     int totalPlayerMoves = 0;
 
     while(userInput != COMMAND_QUIT){
-        // Print valid inputs
-        std::cout << "----------------------------------------------------------" << std::endl;
-        std::cout << "At this stage of the game, only these inputs are acceptable:" << std::endl;
-        std::cout << "forward" << std::endl;
-        std::cout << "turn_left (or l)" << std::endl;
-        std::cout << "turn_right (or r)" << std::endl;
-        std::cout << "quit" << std::endl;
+        playOptions();
+        // Take user input
         userInput = Helper::readInput();
+
+        if(std::cin.eof()){
+            userInput = COMMAND_QUIT;
+        }
         
         Helper::splitString(userInput, inputVec, " ");
 
@@ -203,43 +212,27 @@ void Game::play()
             Position ogPos = player->position;
             Position newPos = Position();
             
+            // Moves the player on the board
             newPos = player->getNextForwardPosition();
             player->updatePosition(newPos);
             validPos = board->movePlayerForward(player);
             
-            // If the cell is blocked then the position is reverted back to original position
-
-            if(validPos == PLAYER_MOVED){
-                board->display(player);
-                totalPlayerMoves += 1;
-            }
-
-            else if(validPos == CELL_BLOCKED){
-                std::cout << "Cell is blocked" << std::endl;
-                player->updatePosition(ogPos);
-            }
-
-            // If new position is outside bounds then revert back to original position
-            else{
-                std::cout << "The car is at the edge of the board and cannot move further in that direction" << std::endl;
-                player->updatePosition(ogPos);
-            }
+            // Checks if the move was valid and add to move count
+            totalPlayerMoves += checkPlayerPos(ogPos, validPos);
 
             std::cout << std::endl;
         }
 
         else if(inputVec[0] == COMMAND_TURN_LEFT || inputVec[0] == COMMAND_TURN_LEFT_SHORTCUT){
+            // Passes direction of turn to turn command and prints turning direction
             TurnDirection turnTo = TURN_LEFT;
-            std::cout << "Turning left" << std::endl;
-            player->turnDirection(turnTo);
-            board->display(player);
+            turnFunction(turnTo);
         }
 
         else if(inputVec[0] == COMMAND_TURN_RIGHT || inputVec[0] == COMMAND_TURN_RIGHT_SHORTCUT){
+            // Passes direction of to turn command and prints turning direction
             TurnDirection turnTo = TURN_RIGHT;
-            std::cout << "Turning right" << std::endl;
-            player->turnDirection(turnTo);
-            board->display(player);
+            turnFunction(turnTo);
         }
 
         else if(inputVec[0] == COMMAND_QUIT){
@@ -297,4 +290,55 @@ void Game::printGameMenu(){
 
         std::cout << std::endl;
     }
+}
+
+void Game::turnFunction(TurnDirection turnTo){
+
+    // Send the direction the player should turn to to player and display new direction
+    if(turnTo == TURN_LEFT){
+        std::cout << "Turning left" << std::endl;
+        player->turnDirection(turnTo);
+        board->display(player);
+    }
+
+    else{
+        std::cout << "Turning right" << std::endl;
+        player->turnDirection(turnTo);
+        board->display(player);
+    }
+}
+
+void Game::playOptions(){
+    // Print valid inputs
+    std::cout << "----------------------------------------------------------" << std::endl;
+    std::cout << "At this stage of the game, only these inputs are acceptable:" << std::endl;
+    std::cout << "forward" << std::endl;
+    std::cout << "turn_left (or l)" << std::endl;
+    std::cout << "turn_right (or r)" << std::endl;
+    std::cout << "quit" << std::endl;
+}
+
+int Game::checkPlayerPos(Position ogPos, PlayerMove validPos){
+    int moveCount = 0;
+
+    // If the move was valid then display the player and return 1
+    if(validPos == PLAYER_MOVED){
+        board->display(player);
+        moveCount = 1;
+    }
+
+    // If new pos was blocked then print error message and revert player to old position
+    else if(validPos == CELL_BLOCKED){
+        std::cout << "Cell is blocked" << std::endl;
+        player->updatePosition(ogPos);
+    }
+
+    // If new position is outside bounds then revert back to original position
+    else{
+        std::cout << "The car is at the edge of the board and cannot move further in that direction" << std::endl;
+        player->updatePosition(ogPos);
+    }
+
+    // Return 1 or 0 depending on if move was valid
+    return moveCount;
 }

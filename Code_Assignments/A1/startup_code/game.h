@@ -42,6 +42,9 @@ private:
      */
     bool initializePlayer(int xPos, int yPos, std::string dir);
 
+    /**
+     * Print the game menu
+     */
     void printGameMenu();
 
     /**
@@ -49,6 +52,20 @@ private:
      */
     void play();
 
+    /**
+     * Function that will turn the player
+     */
+    void turnFunction(TurnDirection turnTo);
+
+    /**
+     * Print valid inputs when playing game
+     */
+    void playOptions();
+
+    /**
+     * Checks if new playe position is valid
+     */
+    int checkPlayerPos(Position ogPos, PlayerMove validPos);
     
 
 

@@ -20,7 +20,6 @@ Player::Player()
 void Player::initialisePlayer(Position* position, Direction direction)
 {
     this->position = *position;
-    //std::cout << position->x << position->y << std::endl;
     this->direction = direction;
 }
 
@@ -66,8 +65,8 @@ void Player::turnDirection(TurnDirection turnDirection)
 
 Position Player::getNextForwardPosition()
 {
-    //TODO
     Position temp = Position();
+
     if(direction == NORTH){
         temp.x = position.x;
         temp.y = (position.y - 1);
