@@ -55,35 +55,11 @@ void Game::start()
             userInput = "invalid";
             Helper::printInvalidInput();
         }
-        
-        
 
         else{
             // If user inputs generate command
             if(load_vec.size() == 3 && load_vec[0] == COMMAND_GENERATE_RANDOM){
-                int size;
-                float probability;
-
-                // Check if inputs are numbers
-                if(Helper::isNumber(init_vec[1]) == true && Helper::isNumber(init_vec[2])){
-                    size = stoi(init_vec[1]);
-                    probability = stof(init_vec[2]);
-                }
-
-                else{
-                    size = -1;
-                    probability = -1;
-                }
-                
-                // Check if numbers are wihtin bounds
-                if(probability > 1 || probability < 0 || size < 10 || size > 20){
-                    Helper::printInvalidInput();
-                }
-
-                else{
-                    boardLoaded = true;
-                    board->generate(size, probability);
-                }  
+                boardLoaded = generateBoard(load_vec, init_vec);  
             }
 
             // User inputs initialise command
@@ -102,14 +78,9 @@ void Game::start()
                         Helper::printInvalidInput();
                     }
                 }
-                
             }
-
-            else if(load_vec[0] == COMMAND_QUIT){
-                userInput = COMMAND_QUIT;
-            }
-
-            else{
+            
+            else if(userInput != COMMAND_QUIT){
                 Helper::printInvalidInput();
             }
         }
@@ -122,12 +93,7 @@ void Game::start()
         }
 
         load_vec.clear();
-        
     }
-
-    std::cout << std::endl;
-    std::cout << "Leaving game" << std::endl;
-    std::cout << std::endl;
 }
 
 bool Game::loadBoard(int boardId)
@@ -290,6 +256,35 @@ void Game::printGameMenu(){
 
         std::cout << std::endl;
     }
+}
+
+bool Game::generateBoard(vector<string> load_vec, vector<string> init_vec){
+    int size;
+    float probability;
+    bool boardLoaded;
+
+    // Check if inputs are numbers
+    if(Helper::isNumber(init_vec[1]) == true && Helper::isNumber(init_vec[2])){
+        size = stoi(init_vec[1]);
+        probability = stof(init_vec[2]);
+    }
+
+    else{
+        size = -1;
+        probability = -1;
+    }
+                
+    // Check if numbers are wihtin bounds
+    if(probability > 1 || probability < 0 || size < 10 || size > 20){
+        Helper::printInvalidInput();
+    }
+
+    else{
+        boardLoaded = true;
+        board->generate(size, probability);
+    }
+
+    return boardLoaded;
 }
 
 void Game::turnFunction(TurnDirection turnTo){

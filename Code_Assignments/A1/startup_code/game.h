@@ -66,6 +66,11 @@ private:
      * Checks if new playe position is valid
      */
     int checkPlayerPos(Position ogPos, PlayerMove validPos);
+
+    /**
+     * Function that handles generating board
+     */
+    bool generateBoard(std::vector<std::string> load_vec, std::vector<std::string> init_vec);
     
 
 
